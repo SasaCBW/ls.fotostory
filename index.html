@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>LS Fotostory | Login</title>
+<title>LS Fotostory | Área do Cliente</title>
 
 <link rel="stylesheet" href="css/style.css">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 
 <body class="login-page">
@@ -17,29 +23,76 @@
 
 <div class="login-container">
 
+<div class="logo-area">
+
 <h1>LS Fotostory</h1>
 
-<p>Transformando momentos em memórias eternas.</p>
+<p>
+Transformando momentos em memórias eternas
+</p>
 
-<form>
+</div>
 
-<input type="email" placeholder="Seu e-mail">
+<form id="loginForm">
 
-<input type="password" placeholder="Sua senha">
+<input
+type="email"
+id="email"
+placeholder="Seu e-mail"
+required>
 
-<button type="submit">
+<input
+type="password"
+id="senha"
+placeholder="Sua senha"
+required>
+
+<button
+type="submit"
+class="btn-login">
+
 Entrar
+
 </button>
 
 </form>
 
-<button class="google-btn">
+<button
+class="google-btn"
+onclick="loginGoogle()">
+
+<i class="fab fa-google"></i>
+
 Entrar com Google
+
 </button>
 
-<a href="#">Esqueceu sua senha?</a>
+<div class="divider">
+
+<span>ou</span>
 
 </div>
 
+<button
+class="btn-cadastro"
+onclick="cadastrar()">
+
+Criar Conta
+
+</button>
+
+<div class="links">
+
+<a href="#">
+Esqueci minha senha
+</a>
+
+</div>
+
+</div>
+
+<script type="module" src="js/firebase.js"></script>
+
 </body>
+
 </html>
