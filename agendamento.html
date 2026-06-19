@@ -10,98 +10,73 @@
 
 <link rel="stylesheet" href="css/style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
 
 <header>
 
-<div class="logo">
-LS Fotostory
-</div>
+<div class="logo">LS Fotostory</div>
 
 <nav>
+
 <a href="inicio.html">Início</a>
 <a href="galeria.html">Galeria</a>
-<a href="agendamento.html">Agendamento</a>
+<a href="agendamento.html">Agendar</a>
 <a href="contato.html">Contato</a>
 <a href="dashboard.html">Área do Cliente</a>
+
 </nav>
 
 </header>
 
+<!-- FORMULÁRIO -->
+
 <section class="formulario">
 
-<h2>Agendar Reunião</h2>
+<h2>Agende sua Sessão</h2>
 
-<form>
+<form id="formAgendamento">
 
-<input
-type="text"
-placeholder="Seu nome completo"
-required
->
+<input type="text" id="nome" placeholder="Seu nome completo" required>
 
-<input
-type="email"
-placeholder="Seu e-mail"
-required
->
+<input type="email" id="email" placeholder="Seu e-mail" required>
 
-<input
-type="tel"
-placeholder="Seu telefone"
-required
->
+<input type="tel" id="telefone" placeholder="Seu telefone" required>
 
-<select required>
+<select id="responsavel" required>
 
-<option value="">
-Escolha com quem deseja falar
-</option>
-
-<option>
-Sarah
-</option>
-
-<option>
-Laryssa
-</option>
+<option value="">Escolha o fotógrafo</option>
+<option value="Sarah">Sarah</option>
+<option value="Laryssa">Laryssa</option>
 
 </select>
 
-<input
-type="date"
-required
->
+<input type="date" id="data" required>
 
-<input
-type="time"
-required
->
+<input type="time" id="hora" required>
 
-<textarea
-placeholder="Descreva o serviço que deseja contratar..."
-required
-></textarea>
+<textarea id="mensagem" placeholder="Descreva seu evento..." required></textarea>
 
-<button type="submit">
-Solicitar Agendamento
-</button>
+<button type="submit">Enviar Agendamento</button>
 
 </form>
 
 </section>
 
-<footer>
+<!-- WHATSAPP FLUTUANTE -->
 
-<p>
-© 2026 LS Fotostory - Todos os direitos reservados
-</p>
+<a href="https://wa.me/5542988641120"
+class="whatsapp"
+target="_blank">
 
-</footer>
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+<!-- FIREBASE + WHATSAPP SCRIPT -->
+
+<script type="module" src="js/agendamento.js"></script>
 
 </body>
 
