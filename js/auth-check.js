@@ -4,7 +4,6 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔥 COLE SUA CONFIG FIREBASE AQUI
 const firebaseConfig = {
   apiKey: "SUA_API_KEY",
   authDomain: "SEU_AUTH_DOMAIN",
@@ -17,12 +16,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// 🔐 PROTEÇÃO DO ADMIN
+// 🔒 E-MAILS AUTORIZADOS (ADMIN)
+const admins = [
+  "sarah@email.com",
+  "laryssa@email.com"
+];
+
 onAuthStateChanged(auth, (user) => {
 
   if (!user) {
-    // ninguém logado → bloqueia acesso
     window.location.href = "index.html";
+    return;
+  }
+
+  if (!admins.includes(user.email)) {
+    alert("Acesso negado!");
+    window.location.href = "inicio.html";
   }
 
 });
