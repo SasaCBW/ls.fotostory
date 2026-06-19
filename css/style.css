@@ -619,3 +619,30 @@ height:200px;
 object-fit:cover;
 border-radius:15px;
 }
+#listaAgendamentos{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+#listaAgendamentos .album{
+padding:20px;
+}
+
+#listaAgendamentos button{
+margin:5px;
+padding:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+#listaAgendamentos button:first-of-type{
+background:#4CAF50;
+color:white;
+}
+
+#listaAgendamentos button:last-of-type{
+background:#e74c3c;
+color:white;
+}
