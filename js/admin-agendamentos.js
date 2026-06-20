@@ -14,7 +14,9 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+// ===================
 // FIREBASE
+// ===================
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkLBbm6gwbRfW16vA4YucU9MWQP9rtfCg",
@@ -30,11 +32,15 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// ===================
 // EMAILJS
+// ===================
 
 emailjs.init("Vq9GLoYjeoRzcCfx0");
 
-// PROTEGER PAINEL
+// ===================
+// PROTEÇÃO DO PAINEL
+// ===================
 
 onAuthStateChanged(auth, (user) => {
 
@@ -46,7 +52,9 @@ onAuthStateChanged(auth, (user) => {
 
 });
 
-// LISTAR AGENDAMENTOS
+// ===================
+// CARREGAR AGENDAMENTOS
+// ===================
 
 async function carregarAgendamentos() {
 
@@ -67,10 +75,16 @@ async function carregarAgendamentos() {
         <h3>${data.nome}</h3>
 
         <p>📧 ${data.email}</p>
+
         <p>📞 ${data.telefone}</p>
+
         <p>📅 ${data.data}</p>
+
         <p>⏰ ${data.hora}</p>
+
         <p>📷 ${data.responsavel}</p>
+
+        <p>📝 ${data.mensagem}</p>
 
         <p><strong>Status:</strong> ${data.status}</p>
 
@@ -109,7 +123,9 @@ async function carregarAgendamentos() {
 
 }
 
+// ===================
 // ATUALIZAR STATUS
+// ===================
 
 window.atualizarStatus = async function (
   id,
@@ -127,13 +143,11 @@ window.atualizarStatus = async function (
     status: status
   });
 
-  // ENVIA E-MAIL SOMENTE QUANDO CONFIRMAR
-
   if (status === "confirmado") {
 
     emailjs.send(
-      "SEU_SERVICE_ID",
-      "SEU_TEMPLATE_ID",
+      "service_kos1zv6",
+      "template_fps1y8j",
       {
         nome: nome,
         data: dataEvento,
@@ -171,7 +185,9 @@ window.atualizarStatus = async function (
 
 };
 
+// ===================
 // LOGOUT
+// ===================
 
 window.logout = async function () {
 
