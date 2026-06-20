@@ -3,20 +3,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getFirestore,
   collection,
-  getDocs,
-  updateDoc,
-  doc
+  addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-// ===================
-// FIREBASE
-// ===================
+// CONFIGURAÇÃO FIREBASE
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkLBbm6gwbRfW16vA4YucU9MWQP9rtfCg",
@@ -28,171 +18,55 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
-const auth = getAuth(app);
 
-// ===================
-// EMAILJS
-// ===================
+// FUNÇÃO DE AGENDAMENTO
 
-emailjs.init("Vq9GLoYjeoRzcCfx0");
+window.enviarAgendamento = async function () {
 
-// ===================
-// PROTEÇÃO DO PAINEL
-// ===================
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const telefone = document.getElementById("telefone").value;
+  const data = document.getElementById("data").value;
+  const hora = document.getElementById("hora").value;
+  const responsavel = document.getElementById("responsavel").value;
+  const mensagem = document.getElementById("mensagem").value;
 
-onAuthStateChanged(auth, (user) => {
-
-  if (!user) {
-    window.location.href = "index.html";
-  } else {
-    carregarAgendamentos();
+  if (!nome || !email || !telefone || !data || !hora) {
+    alert("Preencha todos os campos.");
+    return;
   }
 
-});
+  try {
 
-// ===================
-// CARREGAR AGENDAMENTOS
-// ===================
+    await addDoc(collection(db, "agendamentos"), {
 
-async function carregarAgendamentos() {
-
-  const snap = await getDocs(collection(db, "agendamentos"));
-
-  const lista = document.getElementById("listaAgendamentos");
-
-  lista.innerHTML = "";
-
-  snap.forEach((item) => {
-
-    const data = item.data();
-
-    lista.innerHTML += `
-
-      <div class="album">
-
-        <h3>${data.nome}</h3>
-
-        <p>📧 ${data.email}</p>
-
-        <p>📞 ${data.telefone}</p>
-
-        <p>📅 ${data.data}</p>
-
-        <p>⏰ ${data.hora}</p>
-
-        <p>📷 ${data.responsavel}</p>
-
-        <p>📝 ${data.mensagem}</p>
-
-        <p><strong>Status:</strong> ${data.status}</p>
-
-        <button onclick="atualizarStatus(
-          '${item.id}',
-          'confirmado',
-          '${data.email}',
-          '${data.nome}',
-          '${data.data}',
-          '${data.hora}',
-          '${data.responsavel}'
-        )">
-
-        Confirmar
-
-        </button>
-
-        <button onclick="atualizarStatus(
-          '${item.id}',
-          'cancelado',
-          '${data.email}',
-          '${data.nome}',
-          '${data.data}',
-          '${data.hora}',
-          '${data.responsavel}'
-        )">
-
-        Cancelar
-
-        </button>
-
-      </div>
-
-    `;
-  });
-
-}
-
-// ===================
-// ATUALIZAR STATUS
-// ===================
-
-window.atualizarStatus = async function (
-  id,
-  status,
-  email,
-  nome,
-  dataEvento,
-  hora,
-  responsavel
-) {
-
-  const refDoc = doc(db, "agendamentos", id);
-
-  await updateDoc(refDoc, {
-    status: status
-  });
-
-  if (status === "confirmado") {
-
-    emailjs.send(
-      "service_kos1zv6",
-      "template_fps1y8j",
-      {
-        nome: nome,
-        data: dataEvento,
-        hora: hora,
-        responsavel: responsavel,
-        email: email
-      }
-    )
-
-    .then(() => {
-
-      alert("Agendamento confirmado e e-mail enviado!");
-
-      location.reload();
-
-    })
-
-    .catch((error) => {
-
-      console.log(error);
-
-      alert("Agendamento confirmado, mas ocorreu erro ao enviar o e-mail.");
-
-      location.reload();
+      nome: nome,
+      email: email,
+      telefone: telefone,
+      data: data,
+      hora: hora,
+      responsavel: responsavel,
+      mensagem: mensagem,
+      status: "pendente",
+      criadoEm: new Date()
 
     });
 
-  } else {
+    alert("Agendamento enviado com sucesso! 📸");
 
-    alert("Agendamento cancelado.");
+    document.getElementById("nome").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("telefone").value = "";
+    document.getElementById("data").value = "";
+    document.getElementById("hora").value = "";
+    document.getElementById("mensagem").value = "";
 
-    location.reload();
+  } catch (error) {
+
+    console.error(error);
+    alert("Erro ao enviar agendamento: " + error.message);
 
   }
-
-};
-
-// ===================
-// LOGOUT
-// ===================
-
-window.logout = async function () {
-
-  await signOut(auth);
-
-  window.location.href = "index.html";
 
 };
