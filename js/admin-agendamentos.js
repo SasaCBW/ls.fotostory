@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
   getFirestore,
   collection,
@@ -13,21 +14,28 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔥 CONFIG FIREBASE
+// FIREBASE
+
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_AUTH_DOMAIN",
-  projectId: "SEU_PROJECT_ID",
-  storageBucket: "SEU_STORAGE_BUCKET",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID"
+  apiKey: "AIzaSyBkLBbm6gwbRfW16vA4YucU9MWQP9rtfCg",
+  authDomain: "ls-fotostory.firebaseapp.com",
+  projectId: "ls-fotostory",
+  storageBucket: "ls-fotostory.firebasestorage.app",
+  messagingSenderId: "281416299489",
+  appId: "1:281416299489:web:c011bf6af5f463a7dd8a0"
 };
 
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// 🔐 LOGIN ADMIN
+// EMAILJS
+
+emailjs.init("Vq9GLoYjeoRzcCfx0");
+
+// PROTEGER PAINEL
+
 onAuthStateChanged(auth, (user) => {
 
   if (!user) {
@@ -38,7 +46,8 @@ onAuthStateChanged(auth, (user) => {
 
 });
 
-// 📋 LISTAR AGENDAMENTOS
+// LISTAR AGENDAMENTOS
+
 async function carregarAgendamentos() {
 
   const snap = await getDocs(collection(db, "agendamentos"));
@@ -52,28 +61,65 @@ async function carregarAgendamentos() {
     const data = item.data();
 
     lista.innerHTML += `
+
       <div class="album">
 
         <h3>${data.nome}</h3>
 
         <p>📧 ${data.email}</p>
         <p>📞 ${data.telefone}</p>
-        <p>📅 ${data.data} - ${data.hora}</p>
+        <p>📅 ${data.data}</p>
+        <p>⏰ ${data.hora}</p>
         <p>📷 ${data.responsavel}</p>
-        <p>📝 ${data.mensagem}</p>
 
-        <p><b>Status:</b> ${data.status}</p>
+        <p><strong>Status:</strong> ${data.status}</p>
 
-        <button onclick="atualizarStatus('${item.id}', 'confirmado')">Confirmar</button>
-        <button onclick="atualizarStatus('${item.id}', 'cancelado')">Cancelar</button>
+        <button onclick="atualizarStatus(
+          '${item.id}',
+          'confirmado',
+          '${data.email}',
+          '${data.nome}',
+          '${data.data}',
+          '${data.hora}',
+          '${data.responsavel}'
+        )">
+
+        Confirmar
+
+        </button>
+
+        <button onclick="atualizarStatus(
+          '${item.id}',
+          'cancelado',
+          '${data.email}',
+          '${data.nome}',
+          '${data.data}',
+          '${data.hora}',
+          '${data.responsavel}'
+        )">
+
+        Cancelar
+
+        </button>
 
       </div>
+
     `;
   });
+
 }
 
-// 🔄 ATUALIZAR STATUS
-window.atualizarStatus = async function (id, status) {
+// ATUALIZAR STATUS
+
+window.atualizarStatus = async function (
+  id,
+  status,
+  email,
+  nome,
+  dataEvento,
+  hora,
+  responsavel
+) {
 
   const refDoc = doc(db, "agendamentos", id);
 
@@ -81,13 +127,56 @@ window.atualizarStatus = async function (id, status) {
     status: status
   });
 
-  alert("Status atualizado!");
+  // ENVIA E-MAIL SOMENTE QUANDO CONFIRMAR
 
-  location.reload();
+  if (status === "confirmado") {
+
+    emailjs.send(
+      "SEU_SERVICE_ID",
+      "SEU_TEMPLATE_ID",
+      {
+        nome: nome,
+        data: dataEvento,
+        hora: hora,
+        responsavel: responsavel,
+        email: email
+      }
+    )
+
+    .then(() => {
+
+      alert("Agendamento confirmado e e-mail enviado!");
+
+      location.reload();
+
+    })
+
+    .catch((error) => {
+
+      console.log(error);
+
+      alert("Agendamento confirmado, mas ocorreu erro ao enviar o e-mail.");
+
+      location.reload();
+
+    });
+
+  } else {
+
+    alert("Agendamento cancelado.");
+
+    location.reload();
+
+  }
+
 };
 
-// 🚪 LOGOUT
+// LOGOUT
+
 window.logout = async function () {
+
   await signOut(auth);
+
   window.location.href = "index.html";
+
 };
