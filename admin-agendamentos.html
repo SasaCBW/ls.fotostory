@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Sessão - LS Fotostory</title>
 
-<title>Agendamentos | Admin LS Fotostory</title>
-
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<header>
-<div class="logo">Admin LS Fotostory</div>
+    <section class="container">
 
-<nav>
-<a href="admin.html">Upload Fotos</a>
-<a href="admin-agendamentos.html">Agendamentos</a>
-<a href="#" onclick="logout()">Sair</a>
-</nav>
-</header>
+        <h1>Agendar Sessão 📸</h1>
 
-<section class="dashboard">
+        <input type="text" id="nome" placeholder="Seu nome">
 
-<h2>Agendamentos Recebidos</h2>
+        <input type="email" id="email" placeholder="Seu e-mail">
 
-<div id="listaAgendamentos"></div>
+        <input type="tel" id="telefone" placeholder="Seu telefone">
 
-</section>
+        <label>Data:</label>
+        <input type="date" id="data">
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <label>Horário:</label>
+        <input type="time" id="hora">
 
-<script type="module" src="js/admin-agendamentos.js"></script>
-  
+        <label>Responsável:</label>
+        <select id="responsavel">
+            <option value="Sarah">Sarah</option>
+            <option value="Laryssa">Laryssa</option>
+        </select>
+
+        <textarea id="mensagem"
+                  placeholder="Descreva o tipo de ensaio"></textarea>
+
+        <button onclick="enviarAgendamento()">
+            Enviar Agendamento
+        </button>
+
+    </section>
+
+    <script type="module" src="js/agendamento.js"></script>
+
 </body>
 </html>
